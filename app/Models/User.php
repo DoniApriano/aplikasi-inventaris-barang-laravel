@@ -17,11 +17,29 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
+    protected $primaryKey = 'code';
+    public $incrementing = false;
+
     protected $fillable = [
-        'name',
-        'email',
-        'password',
+        'code', 'name', 'username', 'password', 'phone_number', 'address', 'role_id'
     ];
+
+    protected static function booted()
+    {
+        static::creating(function ($user) {
+            $latestUser = static::latest()->first();
+
+            if ($latestUser) {
+                $latestCode = $latestUser->kode_barang;
+                $newCode = 'USR' . str_pad((int)substr($latestCode, 3) + 1, 3, '0', STR_PAD_LEFT);
+            } else {
+                $newCode = 'USR001';
+            }
+
+            $user->code = $newCode;
+        });
+    }
+
 
     /**
      * The attributes that should be hidden for serialization.
