@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\admin\AdminController;
+use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,3 +18,18 @@ use Illuminate\Support\Facades\Route;
 // Route::get('/', function () {
 //     return view('welcome');
 // });
+Route::get("auth/login", [AuthController::class, 'index']);
+Route::post("auth/login", [AuthController::class, 'login'])->name('login');
+
+Route::group(["middleware" => "check-role:Admin", "as" => "Admin."], function () {
+    Route::get('/admin/dashboard', [AdminController::class, 'index'])->name('index');
+    Route::delete('/admin/logout', [AuthController::class, 'logout'])->name('logout');
+});
+
+Route::group(["middleware" => "check-role:Owner", "as" => "Owner."], function () {
+
+});
+
+Route::group(["middleware" => "check-role:Employee", "as" => "Employee."], function () {
+
+});
