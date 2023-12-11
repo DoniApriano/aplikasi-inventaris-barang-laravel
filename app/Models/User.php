@@ -17,11 +17,18 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
-    protected $primaryKey = 'code';
+    protected $primaryKey = "code";
     public $incrementing = false;
 
     protected $fillable = [
-        'code', 'name', 'username', 'password', 'phone_number', 'address', 'role_id'
+        "code",
+        "name",
+        "username",
+        "password",
+        "phone_number",
+        "address",
+        "role_id",
+        "supplier_id",
     ];
 
     protected static function booted()
@@ -31,9 +38,9 @@ class User extends Authenticatable
 
             if ($latestUser) {
                 $latestCode = $latestUser->kode_barang;
-                $newCode = 'USR' . str_pad((int)substr($latestCode, 3) + 1, 3, '0', STR_PAD_LEFT);
+                $newCode = "USR" . str_pad((int)substr($latestCode, 3) + 1, 3, "0", STR_PAD_LEFT);
             } else {
-                $newCode = 'USR001';
+                $newCode = "USR001";
             }
 
             $user->code = $newCode;
@@ -45,6 +52,11 @@ class User extends Authenticatable
         return $this->belongsTo(Role::class);
     }
 
+    public function supplier()
+    {
+        return $this->belongsTo(Suppliers::class);
+    }
+
 
     /**
      * The attributes that should be hidden for serialization.
@@ -52,8 +64,8 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $hidden = [
-        'password',
-        'remember_token',
+        "password",
+        "remember_token",
     ];
 
     /**
@@ -62,7 +74,7 @@ class User extends Authenticatable
      * @var array<string, string>
      */
     protected $casts = [
-        'email_verified_at' => 'datetime',
-        'password' => 'hashed',
+        "email_verified_at" => "datetime",
+        "password" => "hashed",
     ];
 }
