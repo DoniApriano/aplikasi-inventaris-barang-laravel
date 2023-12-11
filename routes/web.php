@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\admin\AdminController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\owner\OwnerController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -27,7 +28,8 @@ Route::group(["middleware" => "check-role:Admin", "as" => "Admin."], function ()
 });
 
 Route::group(["middleware" => "check-role:Owner", "as" => "Owner."], function () {
-
+    Route::get('/owner/dashboard', [OwnerController::class, 'index'])->name('index');
+    Route::delete('/owner/logout', [AuthController::class, 'logout'])->name('logout');
 });
 
 Route::group(["middleware" => "check-role:Employee", "as" => "Employee."], function () {

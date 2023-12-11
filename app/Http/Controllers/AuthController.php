@@ -22,9 +22,13 @@ class AuthController extends Controller
         ];
 
         if (Auth::attempt($credentials)) {
-            $user = Auth::user();
+            $role = Auth::user()->role->name;
 
-            return redirect()->route('Admin.index');
+            if ($role == "Admin") {
+                return redirect()->route('Admin.index');
+            } else if ($role == "Owner") {
+                return redirect()->route('Owner.index');
+            }
         }
         return back()->with('error', 'Email dan Password tidak cocok');
     }

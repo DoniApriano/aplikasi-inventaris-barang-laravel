@@ -6,7 +6,8 @@
                 <div class="d-flex align-items-end row">
                     <div class="col-sm-7">
                         <div class="card-body">
-                            <h1 class="card-title text-primary">Selamat Datang! 🎉</h1>
+                            <h1 class="card-title text-primary">Selamat Datang {{ $name }}</h1>
+                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Aspernatur deleniti veritatis aut ratione officia veniam iste, ullam quod nulla nisi.</p>
                         </div>
                     </div>
                     <div class="col-sm-5 text-center text-sm-left">
