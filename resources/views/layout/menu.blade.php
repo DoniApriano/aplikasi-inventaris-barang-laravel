@@ -22,5 +22,14 @@
                 <div data-i18n="Analytics">Dashboard</div>
             </a>
         </li>
+        @if ($role == 'Admin')
+            <li
+                class="menu-item {{ Request::is('admin/employee') ? 'active' : '' }}">
+                <a href="{{ $role == 'Admin' ? route('Admin.employeePage') : route('Owner.index') }}" class="menu-link">
+                    <i class="menu-icon tf-icons bx bx-user-circle"></i>
+                    <div data-i18n="Analytics">Pegawai</div>
+                </a>
+            </li>
+        @endif
     </ul>
 </aside>
