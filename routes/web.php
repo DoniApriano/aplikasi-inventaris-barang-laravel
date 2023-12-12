@@ -26,6 +26,8 @@ Route::group(['middleware' => 'check-role:Admin', 'as' => 'Admin.'], function ()
     Route::get('/admin/dashboard', [AdminController::class, 'index'])->name('index');
     Route::get('/admin/employee', [AdminController::class, 'employeePage'])->name('employeePage');
     Route::post('/admin/employee', [AdminController::class, 'employeeCreate'])->name('employeeCreate');
+    Route::put('/admin/employee/{id}', [AdminController::class, 'employeeUpdate'])->name('employeeUpdate');
+    Route::delete('/admin/employee/{id}', [AdminController::class, 'employeeDelete'])->name('employeeDelete');
 
     Route::delete('/admin/logout', [AuthController::class, 'logout'])->name('logout');
 });
