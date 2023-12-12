@@ -4,31 +4,32 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class Item extends Model
 {
     use HasFactory;
 
-    protected $primaryKey = 'code';
-    public $incrementing = false;
-
     protected $fillable = [
-        'code', 'name', 'stock', 'condition', 'category_code'
+        'id', 'name', 'stock', 'condition', 'category_id', 'supplier_id',
     ];
-
-    protected static function booted()
+    public function getIncrementing()
     {
-        static::creating(function ($item) {
-            $latestItem = static::latest()->first();
+        return false;
+    }
 
-            if ($latestItem) {
-                $latestCode = $latestItem->code;
-                $newCode = 'BRG' . str_pad((int)substr($latestCode, 3) + 1, 3, '0', STR_PAD_LEFT);
-            } else {
-                $newCode = 'BRG001';
+    public function getKeyType()
+    {
+        return 'string';
+    }
+
+    protected static function boot()
+    {
+        parent::boot();
+        static::creating(function ($model) {
+            if (empty($model->{$model->getKeyName()})) {
+                $model->{$model->getKeyName()} = Str::uuid()->toString();
             }
-
-            $item->code = $newCode;
         });
     }
 }

@@ -12,13 +12,13 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('item_locations', function (Blueprint $table) {
-            $table->string('code')->primary();
-            $table->string('item_code');
-            $table->string('store_house_code');
+            $table->uuid('id')->primary();
+            $table->uuid('item_id');
+            $table->uuid('store_house_id');
             $table->timestamps();
 
-            $table->foreign('item_code')->references('code')->on('items');
-            $table->foreign('store_house_code')->references('code')->on('store_houses');
+            $table->foreign('item_id')->references('id')->on('items');
+            $table->foreign('store_house_id')->references('id')->on('store_houses');
         });
     }
 

@@ -4,31 +4,32 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class StoreHouse extends Model
 {
     use HasFactory;
 
-    protected $primaryKey = 'code';
-    public $incrementing = false;
-
     protected $fillable = [
         'code', 'name',
     ];
-
-    protected static function booted()
+    public function getIncrementing()
     {
-        static::creating(function ($storeHouse) {
-            $latestStoreHouse = static::latest()->first();
+        return false;
+    }
 
-            if ($latestStoreHouse) {
-                $latestCode = $latestStoreHouse->code;
-                $newCode = 'GDG' . str_pad((int)substr($latestCode, 3) + 1, 3, '0', STR_PAD_LEFT);
-            } else {
-                $newCode = 'GDG001';
+    public function getKeyType()
+    {
+        return 'string';
+    }
+
+    protected static function boot()
+    {
+        parent::boot();
+        static::creating(function ($model) {
+            if (empty($model->{$model->getKeyName()})) {
+                $model->{$model->getKeyName()} = Str::uuid()->toString();
             }
-
-            $storeHouse->code = $newCode;
         });
     }
 

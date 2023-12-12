@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Support\Str;
 
 class User extends Authenticatable
 {
@@ -17,33 +18,34 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
-    protected $primaryKey = "code";
-    public $incrementing = false;
 
     protected $fillable = [
-        "code",
-        "name",
-        "username",
-        "password",
-        "phone_number",
-        "address",
-        "role_id",
-        "supplier_id",
+        'id',
+        'name',
+        'username',
+        'password',
+        'phone_number',
+        'address',
+        'role_id',
     ];
 
-    protected static function booted()
+    public function getIncrementing()
     {
-        static::creating(function ($user) {
-            $latestUser = static::latest()->first();
+        return false;
+    }
 
-            if ($latestUser) {
-                $latestCode = $latestUser->kode_barang;
-                $newCode = "USR" . str_pad((int)substr($latestCode, 3) + 1, 3, "0", STR_PAD_LEFT);
-            } else {
-                $newCode = "USR001";
+    public function getKeyType()
+    {
+        return 'string';
+    }
+
+    protected static function boot()
+    {
+        parent::boot();
+        static::creating(function ($model) {
+            if (empty($model->{$model->getKeyName()})) {
+                $model->{$model->getKeyName()} = Str::uuid()->toString();
             }
-
-            $user->code = $newCode;
         });
     }
 
@@ -64,8 +66,8 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $hidden = [
-        "password",
-        "remember_token",
+        'password',
+        'remember_token',
     ];
 
     /**
@@ -74,7 +76,7 @@ class User extends Authenticatable
      * @var array<string, string>
      */
     protected $casts = [
-        "email_verified_at" => "datetime",
-        "password" => "hashed",
+        'email_verified_at' => 'datetime',
+        'password' => 'hashed',
     ];
 }

@@ -8,8 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class ItemLocation extends Model
 {
     use HasFactory;
-    
+
     protected $fillable = [
-        'item_code', 'store_house_code'
+        'item_id', 'store_house_id'
     ];
 }
