@@ -34,7 +34,7 @@ class AdminController extends Controller
     public function employeeCreate(Request $request)
     {
         $this->validate($request, [
-            'name' => 'required',
+            'name' => 'required|alpha',
             'username' => 'required|min:3',
             'password' => 'required|min:8|max:14',
             'address' => 'required',
@@ -58,7 +58,7 @@ class AdminController extends Controller
     public function employeeUpdate(Request $request, $id)
     {
         $this->validate($request, [
-            'name_update' => 'required',
+            'name_update' => 'required|alpha',
             'address_update' => 'required',
             'phone_number_update' => 'required|numeric',
         ]);
